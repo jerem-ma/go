@@ -3,6 +3,9 @@ import javax.swing.*;
 
 public class GobanGraph extends JPanel
 {
+	private final static int SIZE_HOSHI = 20;
+	private final static int SIZE_STONE = 50;
+
 	private SideLength sideLength;
 
 	public GobanGraph(SideLength sideLength)
@@ -53,13 +56,13 @@ public class GobanGraph extends JPanel
 
 	private void drawStone(Graphics g, StoneInfo stone)
 	{
-		OvalInfo oval = new OvalInfo(stone.getX(), stone.getY(), 50, 50);
+		OvalInfo oval = new OvalInfo(stone.getX(), stone.getY(), SIZE_STONE, SIZE_STONE);
 		this.drawOval(g, oval, stone.getColor());
 	}
 
 	private void drawHoshi(Graphics g, int x, int y)
 	{
-		OvalInfo oval = new OvalInfo(x, y, 20, 20);
+		OvalInfo oval = new OvalInfo(x, y, SIZE_HOSHI, SIZE_HOSHI);
 		this.drawOval(g, oval, Color.BLACK);
 	}
 
