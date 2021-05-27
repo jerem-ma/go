@@ -68,4 +68,21 @@ public class GobanGraph extends JPanel
 
 		g.setColor(oldColor);
 	}
+
+	private void drawHoshi(Graphics g, HoshiGraph hoshi)
+	{
+		Color oldColor = g.getColor();
+		g.setColor(Color.BLACK);
+
+		double gapX = this.getGapX();
+		double gapY = this.getGapY();
+
+		int x = (int) (hoshi.getX()*gapX - hoshi.getSize()/2);
+		int y = (int) (hoshi.getY()*gapY - hoshi.getSize()/2);
+		int size = hoshi.getSize();
+
+		g.fillOval(x, y, size, size);
+
+		g.setColor(oldColor);
+	}
 }
