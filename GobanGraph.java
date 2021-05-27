@@ -51,14 +51,16 @@ public class GobanGraph extends JPanel
 		return this.getSize().getHeight() / this.sideLength.length;
 	}
 
-	private void drawStone(Graphics g, StoneGraph stone)
+	private void drawStone(Graphics g, StoneInfo stone)
 	{
-		this.drawOval(g, stone, stone.getColor());
+		OvalInfo oval = new OvalInfo(stone.getX(), stone.getY(), 50, 50);
+		this.drawOval(g, oval, stone.getColor());
 	}
 
-	private void drawHoshi(Graphics g, OvalInfo hoshi)
+	private void drawHoshi(Graphics g, int x, int y)
 	{
-		this.drawOval(g, hoshi, Color.BLACK);
+		OvalInfo oval = new OvalInfo(x, y, 20, 20);
+		this.drawOval(g, oval, Color.BLACK);
 	}
 
 	private void drawOval(Graphics g, OvalInfo oval, Color color)
