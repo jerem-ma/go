@@ -51,4 +51,21 @@ public class GobanGraph extends JPanel
 		return this.getSize().getHeight() / this.sideLength.length;
 	}
 
+	private void drawStone(Graphics g, StoneGraph stone)
+	{
+		Color oldColor = g.getColor();
+		g.setColor(stone.getColor());
+
+		double gapX = this.getGapX();
+		double gapY = this.getGapY();
+
+		int x = (int) ((stone.getX()+.25)*gapX);
+		int y = (int) ((stone.getY()+.25)*gapY);
+		int width = (int) (gapX / 2);
+		int height = (int) (gapY / 2);
+
+		g.fillOval(x, y, width, height);
+
+		g.setColor(oldColor);
+	}
 }
