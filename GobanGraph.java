@@ -25,9 +25,10 @@ public class GobanGraph extends JPanel
 
 	private void drawGrid(Graphics g)
 	{
+		double gapX = this.getGapX();
+		double gapY = this.getGapY();
+
 		Dimension size = this.getSize();
-		double gapX = size.getWidth() / this.sideLength.length;
-		double gapY = size.getHeight() / this.sideLength.length;
 
 		for (double x = 0; x < size.getWidth(); x += gapX)
 		{
@@ -39,4 +40,15 @@ public class GobanGraph extends JPanel
 			g.drawLine(0, (int) y, (int) size.getWidth(), (int) y);
 		}
 	}
+
+	private double getGapX()
+	{
+		return this.getSize().getWidth() / this.sideLength.length;
+	}
+
+	private double getGapY()
+	{
+		return this.getSize().getHeight() / this.sideLength.length;
+	}
+
 }
