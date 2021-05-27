@@ -53,35 +53,28 @@ public class GobanGraph extends JPanel
 
 	private void drawStone(Graphics g, StoneGraph stone)
 	{
-		Color oldColor = g.getColor();
-		g.setColor(stone.getColor());
-
-		double gapX = this.getGapX();
-		double gapY = this.getGapY();
-
-		int x = (int) ((stone.getX()+.25)*gapX);
-		int y = (int) ((stone.getY()+.25)*gapY);
-		int width = (int) (gapX / 2);
-		int height = (int) (gapY / 2);
-
-		g.fillOval(x, y, width, height);
-
-		g.setColor(oldColor);
+		this.drawOval(g, stone, stone.getColor());
 	}
 
-	private void drawHoshi(Graphics g, HoshiGraph hoshi)
+	private void drawHoshi(Graphics g, OvalInfo hoshi)
+	{
+		this.drawOval(g, hoshi, Color.BLACK);
+	}
+
+	private void drawOval(Graphics g, OvalInfo oval, Color color)
 	{
 		Color oldColor = g.getColor();
-		g.setColor(Color.BLACK);
+		g.setColor(color);
 
 		double gapX = this.getGapX();
 		double gapY = this.getGapY();
 
-		int x = (int) (hoshi.getX()*gapX - hoshi.getSize()/2);
-		int y = (int) (hoshi.getY()*gapY - hoshi.getSize()/2);
-		int size = hoshi.getSize();
+		int x = (int) (oval.getX()*gapX - oval.getWidth()/2);
+		int y = (int) (oval.getY()*gapY - oval.getHeight()/2);
+		int width = oval.getWidth();
+		int height = oval.getHeight();
 
-		g.fillOval(x, y, size, size);
+		g.fillOval(x, y, width, height);
 
 		g.setColor(oldColor);
 	}
