@@ -46,7 +46,7 @@ public class StoneGraph {
 	public void setColor(Color color)
 	{
 		if (color == null)
-			throw new IllegalArgumentException();
+			throw new NullPointerException();
 
 		this.color = color;
 	}
