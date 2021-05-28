@@ -28,7 +28,7 @@ public class GobanGraph extends JPanel
 		this.sideLength = sideLength;
 	}
 
-	private void drawGrid(GraphicsWithOffset g)
+	private void drawGrid(Graphics g)
 	{
 		double gapX = this.getGapX();
 		double gapY = this.getGapY();
@@ -65,19 +65,19 @@ public class GobanGraph extends JPanel
 		return this.getSize().getHeight() / this.sideLength.length;
 	}
 
-	private void drawStone(GraphicsWithOffset g, StoneInfo stone)
+	private void drawStone(Graphics g, StoneInfo stone)
 	{
 		OvalInfo oval = new OvalInfo(stone.getX(), stone.getY(), SIZE_STONE, SIZE_STONE);
 		this.drawOval(g, oval, stone.getColor());
 	}
 
-	private void drawHoshi(GraphicsWithOffset g, int x, int y)
+	private void drawHoshi(Graphics g, int x, int y)
 	{
 		OvalInfo oval = new OvalInfo(x, y, SIZE_HOSHI, SIZE_HOSHI);
 		this.drawOval(g, oval, Color.BLACK);
 	}
 
-	private void drawOval(GraphicsWithOffset g, OvalInfo oval, Color color)
+	private void drawOval(Graphics g, OvalInfo oval, Color color)
 	{
 		Color oldColor = g.getColor();
 		g.setColor(color);
