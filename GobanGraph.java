@@ -28,6 +28,15 @@ public class GobanGraph extends JPanel
 		this.sideLength = sideLength;
 	}
 
+	@Override
+	public Dimension getSize()
+	{
+		Dimension sizeWithOffset = new Dimension();
+		sizeWithOffset.setSize(super.getSize().getWidth()-2*OFFSET, super.getSize().getHeight()-2*OFFSET);
+
+		return sizeWithOffset;
+	}
+
 	private void drawGrid(Graphics g)
 	{
 		double gapX = this.getGapX();
@@ -46,13 +55,38 @@ public class GobanGraph extends JPanel
 		}
 	}
 
-	@Override
-	public Dimension getSize()
+	private void drawHoshis(Graphics g)
 	{
-		Dimension sizeWithOffset = new Dimension();
-		sizeWithOffset.setSize(super.getSize().getWidth()-2*OFFSET, super.getSize().getHeight()-2*OFFSET);
+		if (this.sideLength == SideLength.SMALL)
+		{
+			this.drawHoshi(g, 2, 2);
+			this.drawHoshi(g, 6, 2);
+			this.drawHoshi(g, 4, 4);
+			this.drawHoshi(g, 2, 6);
+			this.drawHoshi(g, 6, 6);
+		}
 
-		return sizeWithOffset;
+		else if (this.sideLength == SideLength.MEDIUM)
+		{
+			this.drawHoshi(g, 3, 3);
+			this.drawHoshi(g, 9, 3);
+			this.drawHoshi(g, 6, 6);
+			this.drawHoshi(g, 3, 9);
+			this.drawHoshi(g, 9, 9);
+		}
+
+		else if (this.sideLength == SideLength.LARGE)
+		{
+			this.drawHoshi(g, 3, 3);
+			this.drawHoshi(g, 9, 3);
+			this.drawHoshi(g, 15, 3);
+			this.drawHoshi(g, 3, 9);
+			this.drawHoshi(g, 9, 9);
+			this.drawHoshi(g, 15, 9);
+			this.drawHoshi(g, 3, 15);
+			this.drawHoshi(g, 9, 15);
+			this.drawHoshi(g, 15, 15);
+		}
 	}
 
 	private double getGapX()
