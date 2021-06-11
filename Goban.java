@@ -1,6 +1,6 @@
 import java.awt.Color;
 import java.util.*;
-import java.util.*;
+import java.util.List;
 
 public class Goban
 {
@@ -55,7 +55,22 @@ public class Goban
 
 	public boolean exists(StoneInfo stone)
 	{
-		return Arrays.asList(this.stones).contains(stone);
+		return this.toList(this.stones).contains(stone);
+	}
+
+	private <T> List<T> toList(T[][] array)
+	{
+		List<T> list = new ArrayList<T>();
+
+		for (T[] line : array)
+		{
+			for (T element : line)
+			{
+				list.add(element);
+			}
+		}
+
+		return list;
 	}
 
 	public boolean isLegal(StoneInfo stone)
