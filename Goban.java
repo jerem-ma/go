@@ -61,7 +61,7 @@ public class Goban
 
 	public void setStone(StoneInfo stone)
 	{
-		if (!isLegal(stone))
+		if (!isPlaceable(stone))
 			throw new IllegalMoveException();
 
 		stones.add(stone);
