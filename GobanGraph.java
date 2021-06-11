@@ -46,6 +46,8 @@ public class GobanGraph extends JPanel implements MouseMotionListener
 	protected void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
+		g.translate(OFFSET, OFFSET);
+		this.drawGrid(g);
 		this.drawHoshis(g);
 		this.drawStones(g);
 	}
