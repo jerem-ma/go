@@ -93,6 +93,11 @@ public class Goban
 		stones[stone.getX()][stone.getY()] = stone;
 	}
 
+	public int getNumberOfGroupLiberties(StoneInfo stone)
+	{
+		return this.getGroupLiberties(stone).size();
+	}
+
 	public Set<Point> getGroupLiberties(StoneInfo stone)
 	{
 		return this.getGroupLiberties(stone, new HashSet<StoneInfo>());
