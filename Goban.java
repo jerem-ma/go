@@ -76,7 +76,7 @@ public class Goban
 	public boolean isLegal(StoneInfo stone)
 	{
 		// Fill this method to tell if a move is legal
-		return true;
+		return this.getNumberOfGroupLiberties(stone) > 0;
 	}
 
 	public void play(StoneInfo stone)
