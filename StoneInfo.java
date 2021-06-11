@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.util.Objects;
 
 public class StoneInfo 
 {
@@ -50,5 +51,25 @@ public class StoneInfo
 			throw new NullPointerException();
 
 		this.color = color;
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (o == this)
+			return true;
+
+		if (!(o instanceof StoneInfo))
+			return false;
+
+		StoneInfo stone = (StoneInfo) o;
+
+		return this.x == stone.x && this.y == stone.y;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(this.x, this.y);
 	}
 }
