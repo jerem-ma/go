@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,6 +9,7 @@ public class Goban
 	private Set<StoneInfo> stones;
 	private Goban previous;
 	private Goban next;
+	private Color turn;
 
 	public Goban(SideLength length)
 	{
@@ -18,6 +20,7 @@ public class Goban
 		this.stones = new HashSet<StoneInfo>();
 		this.previous = null;
 		this.next = null;
+		this.turn = Color.BLACK;
 	}
 
 	public Set<StoneInfo> getStones()
@@ -28,5 +31,15 @@ public class Goban
 	public SideLength getSideLength()
 	{
 		return this.sideLength;
+	}
+
+	public Color getTurn()
+	{
+		returnt this.turn;
+	}
+
+	public void switchColor()
+	{
+		this.turn = this.turn == Color.BLACK ? Color.WHITE : Color.BLACK;
 	}
 }
