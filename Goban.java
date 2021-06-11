@@ -59,6 +59,12 @@ public class Goban
 		return true;
 	}
 
+	public void play(StoneInfo stone)
+	{
+		this.setStone(stone);
+		this.switchColor();
+	}
+
 	public void setStone(StoneInfo stone)
 	{
 		if (!isPlaceable(stone))

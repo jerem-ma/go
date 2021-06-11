@@ -74,7 +74,7 @@ public class GobanGraph extends JPanel implements MouseInputListener
 		if (!this.goban.isPlaceable(stone))
 			return;
 
-		this.goban.setStone(stone);
+		this.goban.play(stone);
 		this.repaint();
 	}
 
