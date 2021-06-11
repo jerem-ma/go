@@ -3,8 +3,9 @@ import java.awt.event.*;
 import java.util.Set;
 
 import javax.swing.*;
+import javax.swing.event.*;
 
-public class GobanGraph extends JPanel implements MouseMotionListener
+public class GobanGraph extends JPanel implements MouseInputListener
 {
 	private final static int SIZE_HOSHI = 20;
 	private final static int SIZE_STONE = 50;
@@ -20,6 +21,7 @@ public class GobanGraph extends JPanel implements MouseMotionListener
 		this.currentPos = null;
 
 		this.addMouseMotionListener(this);
+		this.addMouseListener(this);
 	}
 
 	public Goban getGoban()
@@ -64,7 +66,32 @@ public class GobanGraph extends JPanel implements MouseMotionListener
 	}
 
 	@Override
+	public void mouseClicked(MouseEvent e)
+	{
+		Point steppedPos = this.getSteppedPos();
+		StoneInfo stone = new StoneInfo(steppedPos.x, steppedPos.y, this.goban.getTurn());
+
+		if (!this.goban.isPlaceable(stone))
+			return;
+
+		this.goban.setStone(stone);
+		this.repaint();
+	}
+
+	@Override
 	public void mouseDragged(MouseEvent e) {}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+
+	@Override
+	public void mouseExited(MouseEvent e) {}
+
+	@Override
+	public void mousePressed(MouseEvent e) {}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {}
 
   private void drawGrid(Graphics g)
   {
