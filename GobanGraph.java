@@ -58,6 +58,24 @@ public class GobanGraph extends JPanel implements MouseMotionListener
 	@Override
 	public void mouseDragged(MouseEvent e) {}
 
+  private void drawGrid(Graphics g)
+  {
+    double gapX = this.getGapX();
+    double gapY = this.getGapY();
+
+    Dimension size = this.getSize();
+
+    for (double x = 0; x <= size.getWidth(); x += gapX)
+    {
+      g.drawLine((int) x, 0, (int) x, (int) size.getHeight());
+    }
+
+    for (double y = 0; y <= size.getHeight(); y += gapY)
+    {
+      g.drawLine(0, (int) y, (int) size.getWidth(), (int) y);
+    }
+  }
+
 	private double getGapX()
 	{
 		return this.getSize().getWidth() / this.goban.getSideLength().length;
