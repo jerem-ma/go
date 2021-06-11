@@ -43,15 +43,31 @@ public class Goban
 		this.turn = this.turn == Color.BLACK ? Color.WHITE : Color.BLACK;
 	}
 
+	public boolean isPlaceable(StoneInfo stone)
+	{
+		return !this.exists(stone) && this.isLegal(stone);
+	}
+
+	public boolean exists(StoneInfo stone)
+	{
+		return this.stones.contains(stone);
+	}
+
 	public boolean isLegal(StoneInfo stone)
 	{
 		// Fill this method to tell if a move is legal
 		return true;
 	}
 
+	public void play(StoneInfo stone)
+	{
+		this.setStone(stone);
+		this.switchColor();
+	}
+
 	public void setStone(StoneInfo stone)
 	{
-		if (!isLegal(stone))
+		if (!isPlaceable(stone))
 			throw new IllegalMoveException();
 
 		stones.add(stone);
