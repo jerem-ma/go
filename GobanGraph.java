@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.util.Set;
+
 import javax.swing.*;
 
 public class GobanGraph extends JPanel
@@ -8,42 +10,24 @@ public class GobanGraph extends JPanel
 
 	private final static int OFFSET = SIZE_STONE / 2 + 5;
 
-	private SideLength sideLength;
+	private Goban goban;
 
-	public GobanGraph(SideLength sideLength)
+	public GobanGraph(Goban goban)
 	{
-		this.setSideLength(sideLength);
+		this.setGoban(goban);
 	}
 
-	public SideLength getSideLength()
+	public Goban getGoban()
 	{
-		return this.sideLength;
+		return this.goban;
 	}
 
-	public void setSideLength(SideLength sideLength)
+	public void setGoban(Goban goban)
 	{
-		if (sideLength == null)
+		if (goban == null)
 			throw new NullPointerException();
 
-		this.sideLength = sideLength;
-	}
-
-	private void drawGrid(Graphics g)
-	{
-		double gapX = this.getGapX();
-		double gapY = this.getGapY();
-
-		Dimension size = this.getSize();
-
-		for (double x = 0; x <= size.getWidth(); x += gapX)
-		{
-			g.drawLine((int) x, 0, (int) x, (int) size.getHeight());
-		}
-
-		for (double y = 0; y <= size.getHeight(); y += gapY)
-		{
-			g.drawLine(0, (int) y, (int) size.getWidth(), (int) y);
-		}
+		this.goban = goban;
 	}
 
 	@Override
@@ -55,20 +39,71 @@ public class GobanGraph extends JPanel
 		return sizeWithOffset;
 	}
 
+	@Override
+	protected void paintComponent(Graphics g)
+	{
+		this.drawHoshis(g);
+		this.drawStones(g);
+	}
+
 	private double getGapX()
 	{
-		return this.getSize().getWidth() / this.sideLength.length;
+		return this.getSize().getWidth() / this.goban.getSideLength().length;
 	}
 
 	private double getGapY()
 	{
-		return this.getSize().getHeight() / this.sideLength.length;
+		return this.getSize().getHeight() / this.goban.getSideLength().length;
+	}
+
+	private void drawStones(Graphics g)
+	{
+		Set<StoneInfo> stones = this.goban.getStones();
+
+		for (StoneInfo stone : stones)
+		{
+			this.drawStone(g, stone);
+		}
 	}
 
 	private void drawStone(Graphics g, StoneInfo stone)
 	{
 		OvalInfo oval = new OvalInfo(stone.getX(), stone.getY(), SIZE_STONE, SIZE_STONE);
 		this.drawOval(g, oval, stone.getColor());
+	}
+
+	private void drawHoshis(Graphics g)
+	{
+		if (this.goban.getSideLength() == SideLength.SMALL)
+		{
+			this.drawHoshi(g, 2, 2);
+			this.drawHoshi(g, 6, 2);
+			this.drawHoshi(g, 4, 4);
+			this.drawHoshi(g, 2, 6);
+			this.drawHoshi(g, 6, 6);
+		}
+
+		else if (this.goban.getSideLength() == SideLength.MEDIUM)
+		{
+			this.drawHoshi(g, 3, 3);
+			this.drawHoshi(g, 9, 3);
+			this.drawHoshi(g, 6, 6);
+			this.drawHoshi(g, 3, 9);
+			this.drawHoshi(g, 9, 9);
+		}
+
+		else if (this.goban.getSideLength() == SideLength.LARGE)
+		{
+			this.drawHoshi(g, 3, 3);
+			this.drawHoshi(g, 9, 3);
+			this.drawHoshi(g, 15, 3);
+			this.drawHoshi(g, 3, 9);
+			this.drawHoshi(g, 9, 9);
+			this.drawHoshi(g, 15, 9);
+			this.drawHoshi(g, 3, 15);
+			this.drawHoshi(g, 9, 15);
+			this.drawHoshi(g, 15, 15);
+		}
 	}
 
 	private void drawHoshi(Graphics g, int x, int y)
