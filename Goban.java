@@ -108,6 +108,55 @@ public class Goban
 			throw new IllegalMoveException();
 
 		stones[stone.getX()][stone.getY()] = stone;
+
+		killStonesAround(stone);
+	}
+
+	public void deleteStone(Point point)
+	{
+		stones[point.x][point.y] = null;
+	}
+
+	public void killStonesAround(StoneInfo stone)
+	{
+		for (StoneInfo neighbour : this.getNeighbours(stone))
+		{
+			if (this.getNumberOfGroupLiberties(neighbour) == 0)
+			{
+				this.killGroup(neighbour);
+			}
+		}
+	}
+
+	public void killGroup(StoneInfo stone)
+	{
+		List<StoneInfo> group = getGroup(stone);
+
+		for (StoneInfo member : group)
+		{
+			this.deleteStone(new Point(member.getX(), member.getY()));
+		}
+	}
+
+	public List<StoneInfo> getGroup(StoneInfo stone)
+	{
+		List<StoneInfo> group = new ArrayList<StoneInfo>();
+		group.add(stone);
+
+		ListIterator<StoneInfo> li = group.listIterator(group.size());
+
+		while (li.hasPrevious()) // Reverse order to loop through recently added items. Cf. javadoc
+		{
+			StoneInfo current = li.previous();
+
+			for (StoneInfo neighbour : this.getNeighbours(current))
+			{
+				if (neighbour.getColor().equals(stone.getColor()) && !group.contains(neighbour))
+					li.add(neighbour);
+			}
+		}
+
+		return group;
 	}
 
 	public int getNumberOfGroupLiberties(StoneInfo stone)
