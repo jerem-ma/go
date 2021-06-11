@@ -86,12 +86,12 @@ public class GobanGraph extends JPanel implements MouseMotionListener
 
 	private double getGapX()
 	{
-		return this.getSize().getWidth() / this.goban.getSideLength().length;
+		return this.getSize().getWidth() / (this.goban.getSideLength().length-1);
 	}
 
 	private double getGapY()
 	{
-		return this.getSize().getHeight() / this.goban.getSideLength().length;
+		return this.getSize().getHeight() / (this.goban.getSideLength().length-1);
 	}
 
 	private void drawStones(Graphics g)
