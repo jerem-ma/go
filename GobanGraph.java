@@ -1,9 +1,10 @@
 import java.awt.*;
+import java.awt.event.*;
 import java.util.Set;
 
 import javax.swing.*;
 
-public class GobanGraph extends JPanel
+public class GobanGraph extends JPanel implements MouseMotionListener
 {
 	private final static int SIZE_HOSHI = 20;
 	private final static int SIZE_STONE = 50;
@@ -11,10 +12,14 @@ public class GobanGraph extends JPanel
 	private final static int OFFSET = SIZE_STONE / 2 + 5;
 
 	private Goban goban;
+	private Point currentPos;
 
 	public GobanGraph(Goban goban)
 	{
 		this.setGoban(goban);
+		this.currentPos = null;
+
+		this.addMouseMotionListener(this);
 	}
 
 	public Goban getGoban()
@@ -42,9 +47,42 @@ public class GobanGraph extends JPanel
 	@Override
 	protected void paintComponent(Graphics g)
 	{
+		super.paintComponent(g);
+		g.translate(OFFSET, OFFSET);
+		this.drawGrid(g);
 		this.drawHoshis(g);
 		this.drawStones(g);
+		this.drawMousePos(g);
 	}
+
+	@Override
+	public void mouseMoved(MouseEvent e)
+	{
+		this.currentPos = e.getPoint();
+		this.currentPos.translate(-OFFSET, -OFFSET);
+		this.repaint();
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {}
+
+  private void drawGrid(Graphics g)
+  {
+    double gapX = this.getGapX();
+    double gapY = this.getGapY();
+
+    Dimension size = this.getSize();
+
+    for (double x = 0; x <= size.getWidth(); x += gapX)
+    {
+      g.drawLine((int) x, 0, (int) x, (int) size.getHeight());
+    }
+
+    for (double y = 0; y <= size.getHeight(); y += gapY)
+    {
+      g.drawLine(0, (int) y, (int) size.getWidth(), (int) y);
+    }
+  }
 
 	private double getGapX()
 	{
@@ -110,6 +148,28 @@ public class GobanGraph extends JPanel
 	{
 		OvalInfo oval = new OvalInfo(x, y, SIZE_HOSHI, SIZE_HOSHI);
 		this.drawOval(g, oval, Color.BLACK);
+	}
+
+	private void drawMousePos(Graphics g)
+	{
+		if (this.currentPos == null)
+			return;
+
+		double gapX = this.getGapX();
+		double gapY = this.getGapY();
+
+		double xMiddled = this.currentPos.x + gapX/2;
+		double yMiddled = this.currentPos.y + gapY/2;
+
+		int steppedX = (int) Math.round(((xMiddled - xMiddled % gapX) / gapX));
+		int steppedY = (int) Math.round(((yMiddled - yMiddled % gapY) / gapY));
+
+		OvalInfo oval = new OvalInfo(steppedX, steppedY, SIZE_STONE, SIZE_STONE);
+
+		Color baseColor = this.goban.getTurn();
+		Color color = new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 127);
+
+		this.drawOval(g, new OvalInfo(steppedX, steppedY, SIZE_STONE, SIZE_STONE), color);
 	}
 
 	private void drawOval(Graphics g, OvalInfo oval, Color color)
