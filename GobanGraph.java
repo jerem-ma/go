@@ -155,6 +155,21 @@ public class GobanGraph extends JPanel implements MouseMotionListener
 		if (this.currentPos == null)
 			return;
 
+		Point steppedPos = getSteppedPos();
+
+		OvalInfo oval = new OvalInfo(steppedPos.x, steppedPos.y, SIZE_STONE, SIZE_STONE);
+
+		Color baseColor = this.goban.getTurn();
+		Color color = new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 127);
+
+		this.drawOval(g, oval, color);
+	}
+
+	private Point getSteppedPos()
+	{
+		if (this.currentPos == null)
+			return null;
+
 		double gapX = this.getGapX();
 		double gapY = this.getGapY();
 
@@ -164,12 +179,7 @@ public class GobanGraph extends JPanel implements MouseMotionListener
 		int steppedX = (int) Math.round(((xMiddled - xMiddled % gapX) / gapX));
 		int steppedY = (int) Math.round(((yMiddled - yMiddled % gapY) / gapY));
 
-		OvalInfo oval = new OvalInfo(steppedX, steppedY, SIZE_STONE, SIZE_STONE);
-
-		Color baseColor = this.goban.getTurn();
-		Color color = new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 127);
-
-		this.drawOval(g, new OvalInfo(steppedX, steppedY, SIZE_STONE, SIZE_STONE), color);
+		return new Point(steppedX, steppedY);
 	}
 
 	private void drawOval(Graphics g, OvalInfo oval, Color color)
