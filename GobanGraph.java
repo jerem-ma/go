@@ -183,11 +183,20 @@ public class GobanGraph extends JPanel implements MouseInputListener
 			return;
 
 		Point steppedPos = getSteppedPos();
+		StoneInfo stone = new StoneInfo(steppedPos.x, steppedPos.y, this.goban.getTurn());
+
+		if (this.goban.exists(stone))
+			return;
 
 		OvalInfo oval = new OvalInfo(steppedPos.x, steppedPos.y, SIZE_STONE, SIZE_STONE);
 
 		Color baseColor = this.goban.getTurn();
-		Color color = new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 127);
+		Color color;
+
+		if (!this.goban.isLegal(stone))
+			color = new Color(255, 0, 0, 127);
+		else
+			color = new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 127);
 
 		this.drawOval(g, oval, color);
 	}
