@@ -100,12 +100,12 @@ public class GobanGraph extends JPanel implements MouseInputListener
 
     Dimension size = this.getSize();
 
-    for (double x = 0; x <= size.getWidth(); x += gapX)
+    for (double x = 0; (int) x <= size.getWidth(); x += gapX)
     {
       g.drawLine((int) x, 0, (int) x, (int) size.getHeight());
     }
 
-    for (double y = 0; y <= size.getHeight(); y += gapY)
+    for (double y = 0; (int) y <= size.getHeight(); y += gapY)
     {
       g.drawLine(0, (int) y, (int) size.getWidth(), (int) y);
     }
