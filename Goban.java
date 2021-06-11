@@ -48,4 +48,12 @@ public class Goban
 		// Fill this method to tell if a move is legal
 		return true;
 	}
+
+	public void setStone(StoneInfo stone)
+	{
+		if (!isLegal(stone))
+			throw new IllegalMoveException();
+
+		stones.add(stone);
+	}
 }
