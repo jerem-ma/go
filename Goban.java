@@ -43,6 +43,11 @@ public class Goban
 		this.turn = this.turn == Color.BLACK ? Color.WHITE : Color.BLACK;
 	}
 
+	public boolean isPlaceable(StoneInfo stone)
+	{
+		return !this.exists(stone) && this.isLegal(stone);
+	}
+
 	public boolean exists(StoneInfo stone)
 	{
 		return this.stones.contains(stone);
