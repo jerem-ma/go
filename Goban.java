@@ -93,22 +93,50 @@ public class Goban
 		stones[stone.getX()][stone.getY()] = stone;
 	}
 
-	public int getSingleLiberties(StoneInfo stone)
+	public Set<Point> getGroupLiberties(StoneInfo stone)
 	{
-		return this.getBaseLiberties(stone) - this.getNeighbours(stone).length;
+		return this.getGroupLiberties(stone, new HashSet<StoneInfo>());
 	}
 
-	public int getBaseLiberties(StoneInfo stone)
+	public Set<Point> getGroupLiberties(StoneInfo stone, Set<StoneInfo> visited)
 	{
-		int n = 4;
+		Set<Point> liberties = new HashSet<Point>();
+
+		visited.add(stone);
+		liberties.addAll(this.getSingleLiberties(stone));
+
+		for (StoneInfo neighbour : this.getNeighbours(stone))
+		{
+			if (!visited.contains(neighbour) && neighbour.getColor().equals(stone.getColor()))
+				liberties.addAll(getGroupLiberties(neighbour, visited));
+		}
+
+		return liberties;
+	}
+
+	public Set<Point> getSingleLiberties(StoneInfo stone)
+	{
+		Set<Point> liberties = this.getBaseLiberties(stone);
+
+		for (StoneInfo neighbour : this.getNeighbours(stone))
+		{
+			liberties.remove(new Point(neighbour.getX(), neighbour.getY()));
+		}
+
+		return liberties;
+	}
+
+	public Set<Point> getBaseLiberties(StoneInfo stone)
+	{
+		Set<Point> liberties = new HashSet<Point>();
 
 		for (Point potentialNeighbour : getPotentialNeighbours(stone))
 		{
-			if (!this.isInGoban(potentialNeighbour.x, potentialNeighbour.y))
-				n--;
+			if (this.isInGoban(potentialNeighbour.x, potentialNeighbour.y))
+				liberties.add(potentialNeighbour);
 		}
 
-		return n;
+		return liberties;
 	}
 
 	private Point[] getPotentialNeighbours(StoneInfo stone)
