@@ -1,4 +1,4 @@
-import java.awt.Color;
+import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -91,5 +91,52 @@ public class Goban
 			throw new IllegalMoveException();
 
 		stones[stone.getX()][stone.getY()] = stone;
+	}
+
+	public int getSingleLiberties(StoneInfo stone)
+	{
+		return this.getBaseLiberties(stone) - this.getNeighbours(stone).length;
+	}
+
+	public int getBaseLiberties(StoneInfo stone)
+	{
+		int n = 4;
+
+		for (Point potentialNeighbour : getPotentialNeighbours(stone))
+		{
+			if (!this.isInGoban(potentialNeighbour.x, potentialNeighbour.y))
+				n--;
+		}
+
+		return n;
+	}
+
+	private Point[] getPotentialNeighbours(StoneInfo stone)
+	{
+		return new Point[]{new Point(stone.getX()-1, stone.getY()),
+																	 new Point(stone.getX()+1, stone.getY()),
+																	 new Point(stone.getX(), stone.getY()-1),
+																	 new Point(stone.getX(), stone.getY()+1)};
+	}
+
+	public StoneInfo[] getNeighbours(StoneInfo stone)
+	{
+		Set<StoneInfo> neighboursSet = new HashSet<StoneInfo>();
+
+		for (Point potentialNeighbour : getPotentialNeighbours(stone))
+		{
+			if (this.isInGoban(potentialNeighbour.x, potentialNeighbour.y) &&
+					this.stones[potentialNeighbour.x][potentialNeighbour.y] != null)
+			{
+				neighboursSet.add(this.stones[potentialNeighbour.x][potentialNeighbour.y]);
+			}
+		}
+
+		return neighboursSet.toArray(new StoneInfo[neighboursSet.size()]);
+	}
+
+	private boolean isInGoban(int x, int y)
+	{
+		return x >= 0 && y >= 0 && x < this.sideLength.length && y < this.sideLength.length;
 	}
 }
