@@ -81,7 +81,19 @@ public class Goban
 
 	private boolean isSuicide(StoneInfo stone)
 	{
-		return this.getNumberOfGroupLiberties(stone) == 0;
+		if (this.getNumberOfGroupLiberties(stone) != 0)
+			return false;
+
+		for (StoneInfo neighbour : getNeighbours(stone))
+		{
+			if (!neighbour.getColor().equals(stone.getColor()))
+			{
+				if (this.getNumberOfGroupLiberties(neighbour) == 1)
+					return false;
+			}
+		}
+
+		return true;
 	}
 
 	public void play(StoneInfo stone)
