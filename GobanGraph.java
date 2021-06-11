@@ -1,9 +1,10 @@
 import java.awt.*;
+import java.awt.event.*;
 import java.util.Set;
 
 import javax.swing.*;
 
-public class GobanGraph extends JPanel
+public class GobanGraph extends JPanel implements MouseMotionListener
 {
 	private final static int SIZE_HOSHI = 20;
 	private final static int SIZE_STONE = 50;
@@ -11,10 +12,12 @@ public class GobanGraph extends JPanel
 	private final static int OFFSET = SIZE_STONE / 2 + 5;
 
 	private Goban goban;
+	private Point currentPos;
 
 	public GobanGraph(Goban goban)
 	{
 		this.setGoban(goban);
+		this.currentPos = null;
 	}
 
 	public Goban getGoban()
@@ -45,6 +48,15 @@ public class GobanGraph extends JPanel
 		this.drawHoshis(g);
 		this.drawStones(g);
 	}
+
+	@Override
+	public void mouseMoved(MouseEvent e)
+	{
+		this.currentPos = e.getPoint();
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {}
 
 	private double getGapX()
 	{
