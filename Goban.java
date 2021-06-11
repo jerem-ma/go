@@ -35,7 +35,7 @@ public class Goban
 
 	public Color getTurn()
 	{
-		returnt this.turn;
+		return this.turn;
 	}
 
 	public void switchColor()
