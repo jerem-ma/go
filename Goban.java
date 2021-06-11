@@ -42,4 +42,10 @@ public class Goban
 	{
 		this.turn = this.turn == Color.BLACK ? Color.WHITE : Color.BLACK;
 	}
+
+	public boolean isLegal(StoneInfo stone)
+	{
+		// Fill this method to tell if a move is legal
+		return true;
+	}
 }
