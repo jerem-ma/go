@@ -123,11 +123,17 @@ public class GobanGraph extends JPanel implements MouseInputListener
 
 	private void drawStones(Graphics g)
 	{
-		Set<StoneInfo> stones = this.goban.getStones();
+		StoneInfo[][] stones = this.goban.getStones();
 
-		for (StoneInfo stone : stones)
+		for (StoneInfo[] lineStones : stones)
 		{
-			this.drawStone(g, stone);
+			for (StoneInfo stone : lineStones)
+			{
+				if (stone == null)
+					continue;
+
+				this.drawStone(g, stone);
+			}
 		}
 	}
 

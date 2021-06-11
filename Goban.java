@@ -1,12 +1,12 @@
 import java.awt.Color;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.*;
 
 public class Goban
 {
 	private SideLength sideLength;
 
-	private Set<StoneInfo> stones;
+	private StoneInfo[][] stones;
 	private Goban previous;
 	private Goban next;
 	private Color turn;
@@ -17,13 +17,18 @@ public class Goban
 			throw new NullPointerException();
 
 		this.sideLength = length;
-		this.stones = new HashSet<StoneInfo>();
+		this.stones = initStones();
 		this.previous = null;
 		this.next = null;
 		this.turn = Color.BLACK;
 	}
 
-	public Set<StoneInfo> getStones()
+	private StoneInfo[][] initStones()
+	{
+		return new StoneInfo[this.sideLength.length][this.sideLength.length];
+	}
+
+	public StoneInfo[][] getStones()
 	{
 		return this.stones;
 	}
@@ -50,7 +55,7 @@ public class Goban
 
 	public boolean exists(StoneInfo stone)
 	{
-		return this.stones.contains(stone);
+		return Arrays.asList(this.stones).contains(stone);
 	}
 
 	public boolean isLegal(StoneInfo stone)
@@ -70,6 +75,6 @@ public class Goban
 		if (!isPlaceable(stone))
 			throw new IllegalMoveException();
 
-		stones.add(stone);
+		stones[stone.getX()][stone.getY()] = stone;
 	}
 }
