@@ -174,6 +174,7 @@ public class Goban
 		Set<Point> liberties = new HashSet<Point>();
 
 		visited.add(stone);
+		liberties.add(new Point(stone.getX(), stone.getY()));
 		liberties.addAll(this.getSingleLiberties(stone));
 
 		for (StoneInfo neighbour : this.getNeighbours(stone))
@@ -181,6 +182,8 @@ public class Goban
 			if (!visited.contains(neighbour) && neighbour.getColor().equals(stone.getColor()))
 				liberties.addAll(getGroupLiberties(neighbour, visited));
 		}
+
+		liberties.remove(new Point(stone.getX(), stone.getY()));
 
 		return liberties;
 	}
