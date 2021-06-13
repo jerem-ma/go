@@ -136,6 +136,32 @@ public class Goban implements Cloneable
 		this.switchColor();
 	}
 
+	public boolean undo()
+	{
+		if (this.previous == null)
+			return false;
+
+		this.next = this.clone();
+		this.stones = this.previous.stones;
+		this.turn = this.previous.turn;
+		this.previous = this.previous.previous;
+
+		return true;
+	}
+
+	public boolean redo()
+	{
+		if (this.next == null)
+			return false;
+
+		this.previous = this.clone();
+		this.stones = this.next.stones;
+		this.turn = this.next.turn;
+		this.next = this.next.next;
+
+		return true;
+	}
+
 	public void setStone(StoneInfo stone)
 	{
 		if (!isPlaceable(stone))
