@@ -2,7 +2,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public class Goban
+public class Goban implements Cloneable
 {
 	private SideLength sideLength;
 
@@ -21,6 +21,40 @@ public class Goban
 		this.previous = null;
 		this.next = null;
 		this.turn = Color.BLACK;
+	}
+
+	@Override
+	public Goban clone()
+	{
+		Goban cloned;
+		try
+		{
+			cloned = (Goban) super.clone();
+			cloned.stones = cloneArray(this.stones);
+		}
+		catch (CloneNotSupportedException e)
+		{
+			System.out.println("Cloning not allowed. Returning this...");
+			cloned = this;
+		}
+
+		return cloned;
+	}
+
+	private static StoneInfo[][] cloneArray(StoneInfo[][] array)
+	{
+		StoneInfo[][] cloned = new StoneInfo[array.length][];
+
+		for (int i = 0; i < array.length; i++)
+		{
+			cloned[i] = new StoneInfo[array[i].length];
+			for (int j = 0; j < array[i].length; j++)
+			{
+				cloned[i][j] = array[i][j];
+			}
+		}
+
+		return cloned;
 	}
 
 	private StoneInfo[][] initStones()
@@ -102,12 +136,42 @@ public class Goban
 		this.switchColor();
 	}
 
+	public boolean undo()
+	{
+		if (this.previous == null)
+			return false;
+
+		this.next = this.clone();
+		this.stones = this.previous.stones;
+		this.turn = this.previous.turn;
+		this.previous = this.previous.previous;
+
+		return true;
+	}
+
+	public boolean redo()
+	{
+		if (this.next == null)
+			return false;
+
+		this.previous = this.clone();
+		this.stones = this.next.stones;
+		this.turn = this.next.turn;
+		this.next = this.next.next;
+
+		return true;
+	}
+
 	public void setStone(StoneInfo stone)
 	{
 		if (!isPlaceable(stone))
 			throw new IllegalMoveException();
 
 		stones[stone.getX()][stone.getY()] = stone;
+		this.next = null;
+		this.previous = this.clone();
+
+		this.stones[stone.getX()][stone.getY()] = stone;
 
 		killStonesAround(stone);
 	}
