@@ -142,6 +142,10 @@ public class Goban implements Cloneable
 			throw new IllegalMoveException();
 
 		stones[stone.getX()][stone.getY()] = stone;
+		this.next = null;
+		this.previous = this.clone();
+
+		this.stones[stone.getX()][stone.getY()] = stone;
 
 		killStonesAround(stone);
 	}
