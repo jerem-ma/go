@@ -34,7 +34,7 @@ public class MainGraph extends JPanel
 	{
 		this.setVisible(false);
 		this.parent.remove(this);
-		this.parent.add(new OptionsGraph(this.options));
+		this.parent.add(new OptionsGraph(this, this.parent, this.options));
 	}
 
 	private void quitClicked(ActionEvent e)
