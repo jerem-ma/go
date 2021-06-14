@@ -4,9 +4,14 @@ import java.awt.event.*;
 
 public class MainGraph extends JPanel
 {
-	@Override
-	protected void paintComponent(Graphics g)
+	private JFrame parent;
+	private Options options;
+
+	public MainGraph(JFrame parent)
 	{
+		this.parent = parent;
+		this.options = new Options();
+
 		JButton play = new JButton("Play");
 		play.addActionListener(this::playClicked);
 		this.add(play);
@@ -27,7 +32,9 @@ public class MainGraph extends JPanel
 
 	private void optionsClicked(ActionEvent e)
 	{
-
+		this.setVisible(false);
+		this.parent.remove(this);
+		this.parent.add(new OptionsGraph(this, this.parent, this.options));
 	}
 
 	private void quitClicked(ActionEvent e)
