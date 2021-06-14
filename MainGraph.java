@@ -5,10 +5,12 @@ import java.awt.event.*;
 public class MainGraph extends JPanel
 {
 	private JFrame parent;
+	private Options options;
 
 	public MainGraph(JFrame parent)
 	{
 		this.parent = parent;
+		this.options = new Options();
 
 		JButton play = new JButton("Play");
 		play.addActionListener(this::playClicked);
@@ -32,7 +34,7 @@ public class MainGraph extends JPanel
 	{
 		this.setVisible(false);
 		this.parent.remove(this);
-		this.parent.add(new OptionsGraph(new Options()));
+		this.parent.add(new OptionsGraph(this.options));
 	}
 
 	private void quitClicked(ActionEvent e)
