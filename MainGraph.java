@@ -32,6 +32,6 @@ public class MainGraph extends JPanel
 
 	private void quitClicked(ActionEvent e)
 	{
-
+		System.exit(0);
 	}
 }
