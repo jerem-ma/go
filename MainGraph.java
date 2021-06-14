@@ -27,7 +27,9 @@ public class MainGraph extends JPanel
 
 	private void playClicked(ActionEvent e)
 	{
-
+		this.setVisible(false);
+		this.parent.remove(this);
+		this.parent.add(new GobanGraph(new Goban(this.options.gobanSize)));
 	}
 
 	private void optionsClicked(ActionEvent e)
