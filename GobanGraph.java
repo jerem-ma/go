@@ -8,7 +8,7 @@ import javax.swing.event.*;
 public class GobanGraph extends JPanel implements MouseInputListener
 {
 	private final static int SIZE_HOSHI = 20;
-	private final static int SIZE_STONE = 50;
+	private final static int SIZE_STONE = 40;
 
 	private final static int OFFSET = SIZE_STONE / 2 + 5;
 
