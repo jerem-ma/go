@@ -29,7 +29,21 @@ public class MainGraph extends JPanel
 	{
 		this.setVisible(false);
 		this.parent.remove(this);
-		this.parent.add(new GobanGraph(new Goban(this.options.gobanSize)));
+
+		Goban goban = new Goban(this.options.gobanSize);
+		GobanGraph gobanGraph = new GobanGraph(goban);
+
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1;
+		c.weighty = 0.95;
+		c.gridy = 0;
+
+		this.parent.add(gobanGraph, c);
+
+		c.weighty = 0.05;
+		c.gridy = 1;
+		this.parent.add(new UndoRedoPanel(gobanGraph), c);
 	}
 
 	private void optionsClicked(ActionEvent e)
