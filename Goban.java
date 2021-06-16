@@ -110,7 +110,7 @@ public class Goban implements Cloneable
 	public boolean isLegal(StoneInfo stone)
 	{
 		// Fill this method to tell if a move is legal
-		return !isSuicide(stone);
+		return !isSuicide(stone) && !isKo(stone);
 	}
 
 	private boolean isSuicide(StoneInfo stone)
@@ -128,6 +128,19 @@ public class Goban implements Cloneable
 		}
 
 		return true;
+	}
+
+	private boolean isKo(StoneInfo stone)
+	{
+		if (this.previous == null)
+			return false;
+
+		Goban potentialGoban = this.clone();
+		potentialGoban.previous = null;
+
+		potentialGoban.setStone(stone);
+
+		return Arrays.deepEquals(potentialGoban.stones, this.previous.stones);
 	}
 
 	public void play(StoneInfo stone)
@@ -167,7 +180,6 @@ public class Goban implements Cloneable
 		if (!isPlaceable(stone))
 			throw new IllegalMoveException();
 
-		stones[stone.getX()][stone.getY()] = stone;
 		this.next = null;
 		this.previous = this.clone();
 
