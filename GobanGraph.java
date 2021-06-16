@@ -1,20 +1,27 @@
 import java.awt.*;
+import java.awt.event.*;
 import java.util.Set;
 
 import javax.swing.*;
+import javax.swing.event.*;
 
-public class GobanGraph extends JPanel
+public class GobanGraph extends JPanel implements MouseInputListener
 {
 	private final static int SIZE_HOSHI = 20;
-	private final static int SIZE_STONE = 50;
+	private final static int SIZE_STONE = 40;
 
 	private final static int OFFSET = SIZE_STONE / 2 + 5;
 
 	private Goban goban;
+	private Point currentPos;
 
 	public GobanGraph(Goban goban)
 	{
 		this.setGoban(goban);
+		this.currentPos = null;
+
+		this.addMouseMotionListener(this);
+		this.addMouseListener(this);
 	}
 
 	public Goban getGoban()
@@ -42,27 +49,91 @@ public class GobanGraph extends JPanel
 	@Override
 	protected void paintComponent(Graphics g)
 	{
+		super.paintComponent(g);
+		g.translate(OFFSET, OFFSET);
+		this.drawGrid(g);
 		this.drawHoshis(g);
 		this.drawStones(g);
+		this.drawMousePos(g);
 	}
+
+	@Override
+	public void mouseMoved(MouseEvent e)
+	{
+		this.currentPos = e.getPoint();
+		this.currentPos.translate(-OFFSET, -OFFSET);
+		this.repaint();
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e)
+	{
+		Point steppedPos = this.getSteppedPos();
+		StoneInfo stone = new StoneInfo(steppedPos.x, steppedPos.y, this.goban.getTurn());
+
+		if (!this.goban.isPlaceable(stone))
+			return;
+
+		this.goban.play(stone);
+		this.repaint();
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+
+	@Override
+	public void mouseExited(MouseEvent e) {}
+
+	@Override
+	public void mousePressed(MouseEvent e) {}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {}
+
+  private void drawGrid(Graphics g)
+  {
+    double gapX = this.getGapX();
+    double gapY = this.getGapY();
+
+    Dimension size = this.getSize();
+
+    for (double x = 0; (int) x <= size.getWidth(); x += gapX)
+    {
+      g.drawLine((int) x, 0, (int) x, (int) size.getHeight());
+    }
+
+    for (double y = 0; (int) y <= size.getHeight(); y += gapY)
+    {
+      g.drawLine(0, (int) y, (int) size.getWidth(), (int) y);
+    }
+  }
 
 	private double getGapX()
 	{
-		return this.getSize().getWidth() / this.goban.getSideLength().length;
+		return this.getSize().getWidth() / (this.goban.getSideLength().length-1);
 	}
 
 	private double getGapY()
 	{
-		return this.getSize().getHeight() / this.goban.getSideLength().length;
+		return this.getSize().getHeight() / (this.goban.getSideLength().length-1);
 	}
 
 	private void drawStones(Graphics g)
 	{
-		Set<StoneInfo> stones = this.goban.getStones();
+		StoneInfo[][] stones = this.goban.getStones();
 
-		for (StoneInfo stone : stones)
+		for (StoneInfo[] lineStones : stones)
 		{
-			this.drawStone(g, stone);
+			for (StoneInfo stone : lineStones)
+			{
+				if (stone == null)
+					continue;
+
+				this.drawStone(g, stone);
+			}
 		}
 	}
 
@@ -110,6 +181,47 @@ public class GobanGraph extends JPanel
 	{
 		OvalInfo oval = new OvalInfo(x, y, SIZE_HOSHI, SIZE_HOSHI);
 		this.drawOval(g, oval, Color.BLACK);
+	}
+
+	private void drawMousePos(Graphics g)
+	{
+		if (this.currentPos == null)
+			return;
+
+		Point steppedPos = getSteppedPos();
+		StoneInfo stone = new StoneInfo(steppedPos.x, steppedPos.y, this.goban.getTurn());
+
+		if (this.goban.exists(stone))
+			return;
+
+		OvalInfo oval = new OvalInfo(steppedPos.x, steppedPos.y, SIZE_STONE, SIZE_STONE);
+
+		Color baseColor = this.goban.getTurn();
+		Color color;
+
+		if (!this.goban.isLegal(stone))
+			color = new Color(255, 0, 0, 127);
+		else
+			color = new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 127);
+
+		this.drawOval(g, oval, color);
+	}
+
+	private Point getSteppedPos()
+	{
+		if (this.currentPos == null)
+			return null;
+
+		double gapX = this.getGapX();
+		double gapY = this.getGapY();
+
+		double xMiddled = this.currentPos.x + gapX/2;
+		double yMiddled = this.currentPos.y + gapY/2;
+
+		int steppedX = (int) Math.round(((xMiddled - xMiddled % gapX) / gapX));
+		int steppedY = (int) Math.round(((yMiddled - yMiddled % gapY) / gapY));
+
+		return new Point(steppedX, steppedY);
 	}
 
 	private void drawOval(Graphics g, OvalInfo oval, Color color)
